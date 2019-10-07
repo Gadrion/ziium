@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <form id="form_login">
+        <div class="form-group row">
+            <label for="building" class="col-sm-4 col-form-label">ID</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="id_val">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="building" class="col-sm-4 col-form-label">Password</label>
+            <div class="col-sm-8">
+                <input type="password" class="form-control" id="pw_val">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <button type="button" id="click_login" class="btn btn-primary">Login</button>
+            </div>
+        </div>
+        <div id="login_status" style="text-align: center; color: red">
+            입력정보가 일치하지 않습니다.    
+        </div>
+    </form>
+
+    <script src="/js/login.js"></script>
+</body>
+</html>
