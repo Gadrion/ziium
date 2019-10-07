@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*:focus {
+    box-shadow: none !important;
+}
+
+li {
+    list-style: none;
+}
+
+#map_ma {
+    float: left;
+}
+
+#add_ping_area {
+    position: absolute;
+    width: auto;
+    background: white;
+    padding: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+}
+
+#option_area {
+    position: absolute;
+    width: 210px;
+    padding: 10px;
+    background: white;
+    left: 100%;
+    transform: translateX(-100%);
+    z-index: 5;
+}
+
+#search_object_area {
+    position: absolute;
+    width: auto;
+    padding: 10px;
+    background: white;
+    top: 100%;
+    transform: translateY(-100%);
+    z-index: 5;
+}
+
+.marker_popup {
+    margin-top: 10px;
+    padding: 10px 20px;
+}
+
+.marker_popup .btn {
+    font-size: 12px;
+}
+
+.marker_popup .btn:focus {
+    box-shadow: none;
+}
+
+#form_addInfo {
+    border: 1px solid #ccc;
+    padding: 30px;
+    position: absolute;
+    width: 650px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-check-area {
+    float: left;
+    width: 100px;
+}
+
+.form-check-area .form-check-input {
+    margin-left: 0;
+    position: relative;
+}
+
+.custom-file-input {
+    display: none;
+}
+
+.custom-file-label {
+    position: relative;
+    width: 100%;
+}
+
+#search_result {
+    position: absolute;
+    width: 250px;
+    height: 80%;
+    background: rgba(255, 255, 255 , 0.8);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 15px;
+}
+
+#search_result > h5 {
+    float: left;
+    width: 100%;
+    font-size: 16px;
+}
+
+#search_result > h5 > button {
+    font-size: 14px;
+    float: right;
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+}
+
+#search_result .search_result_list {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#search_result .search_result_list li {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0px;
+    height: 60px;
+}
+
+#search_result .search_result_list li:last-child {
+    border-bottom: 0px;
+}
+
+.build_search_checkbox {
+    width: 70px;
+}
+
+#add_object.active {
+    background: #555;
+}
+
+#form_login {
+    border: 1px solid #ccc;
+    padding: 30px;
+    position: absolute;
+    width: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#form_login button {
+    float: left;
+    width: 100%;
+}
