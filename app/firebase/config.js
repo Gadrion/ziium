@@ -6,6 +6,7 @@ const firebaseJSFileLoad = firebaseInitFunc => {
         'https://www.gstatic.com/firebasejs/7.1.0/firebase-storage.js',
         'https://www.gstatic.com/firebasejs/7.1.0/firebase-firestore.js',
         'https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js',
+        'https://www.gstatic.com/firebasejs/7.1.0/firebase-database.js',
     ];
     
     let count = 0;
@@ -41,4 +42,9 @@ firebaseJSFileLoad(() => {
 
     // Initialize Firebase
     window.fb = firebase.initializeApp(firebaseConfig);
+
+    // test code
+    fb.database().ref('admin').once('value', data => {
+        console.log('data value', data.val());
+    });
 });
