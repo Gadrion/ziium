@@ -16,9 +16,10 @@ var marker_content = '<div class="marker_popup" data-index="%index%">';
     marker_content += '<p>%address%</p>';
     marker_content += '<div>';
         marker_content += '<button class="btn btn-secondary" onclick="go_info()">상세정보 입력</button>';
-        marker_content += '<button class="btn btn-secondary">삭제</button>';
+        marker_content += '<button class="btn btn-secondary" onclick="remove_marker(this)">삭제</button>';
     marker_content += '</div>';
 marker_content += '</div>';
+var marker_array = [];
 
 function go_info() {
     location.href = "/views/add_info.html";
@@ -51,7 +52,7 @@ function initMap () {  // SessionStorage에서 Login 토큰 있을 때 GoogleMap
 
         var LoginToken = sessionStorage.getItem('Token');
 
-        if(LoginToken === '1') {
+        if(LoginToken == 1) {
             resolve(response);
         } else {
             reject()
@@ -74,7 +75,7 @@ function make_marker (location) {
     var modify_content = "";
 
     modify_content = marker_content.replace("%index%", marker_count);
-    modify_content = marker_content.replace("%address%", "상세정보를 입력하세요.");
+    modify_content = modify_content.replace("%address%", "상세정보를 입력하세요.");
     modify_content = modify_content.replace("%description%", "상세정보를 입력하세요.");
 
     marker.addListener('click', function () {
@@ -84,6 +85,8 @@ function make_marker (location) {
 
         infoWindow.open(map, marker);
     })
+
+    marker_array.push(marker);
 
     marker_count++;
 }
@@ -100,7 +103,7 @@ function initMarker(response) {
         var modify_content = "";
 
         modify_content = marker_content.replace("%index%", index);
-        modify_content = marker_content.replace("%address%", value.address);
+        modify_content = modify_content.replace("%address%", value.address);
         modify_content = modify_content.replace("%description%", value.description);
 
 
@@ -112,8 +115,15 @@ function initMarker(response) {
             infoWindow.open(map, marker);
         })
 
+        marker_array.push(marker);
         marker_count = index + 1;
+
     })
+}
+
+function remove_marker(element) {
+    var index = $(element).parent().parent().data('index');
+    marker_array[index].setMap(null);
 }
 
 $(function() {
