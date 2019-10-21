@@ -67,28 +67,30 @@ function make_marker (location) {
         return false;
     }
 
-    var marker = new google.maps.Marker({
-        position: location,
-        map: map
-    });
-
-    var modify_content = "";
-
-    modify_content = marker_content.replace("%index%", marker_count);
-    modify_content = modify_content.replace("%address%", "상세정보를 입력하세요.");
-    modify_content = modify_content.replace("%description%", "상세정보를 입력하세요.");
-
-    marker.addListener('click', function () {
-        var infoWindow = new google.maps.InfoWindow({
-            content: modify_content
+    getAddressInfo(location).then(function(address) {
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map
         });
 
-        infoWindow.open(map, marker);
+        var modify_content = "";
+
+        modify_content = marker_content.replace("%index%", marker_count);
+        modify_content = modify_content.replace("%address%", address.results[0].formatted_address);
+        modify_content = modify_content.replace("%description%", "상세정보를 입력하세요.");
+
+        marker.addListener('click', function () {
+            var infoWindow = new google.maps.InfoWindow({
+                content: modify_content
+            });
+
+            infoWindow.open(map, marker);
+        })
+
+        marker_array.push(marker);
+
+        marker_count++;
     })
-
-    marker_array.push(marker);
-
-    marker_count++;
 }
 
 function initMarker(response) {
@@ -121,6 +123,22 @@ function initMarker(response) {
     })
 }
 
+function getAddressInfo(latlng) {
+    var promise = new Promise(function(resolve) {
+        var apiKey = "AIzaSyCcETJafZiUGqDHxV0YwS4YAnehfizoLF0";
+        var lat = latlng.lat();
+        var lng = latlng.lng();
+        var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" + apiKey;
+
+        $.get(url, {}, function(data) {
+            resolve(data);
+        })
+    })
+
+    return promise;
+    
+}
+
 function remove_marker(element) {
     var index = $(element).parent().parent().data('index');
     marker_array[index].setMap(null);
@@ -145,7 +163,7 @@ $(function() {
             var y = event.latLng.lng();
         });
     }, function() {
-        location.replace('/views/login.html')
+        // location.replace('/views/login.html')
     });
 
     $("#add_object").on("click", function(event) {
