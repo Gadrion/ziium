@@ -42,9 +42,19 @@ firebaseJSFileLoad(() => {
 
     // Initialize Firebase
     window.fb = firebase.initializeApp(firebaseConfig);
+    window.db = fb.database();
+    window.storage = fb.storage().ref();
 
     // test code
     fb.database().ref('admin').once('value', data => {
         console.log('data value', data.val());
+    });
+
+    fb.database().ref('users').once('value', data => {
+        console.log('data value', data.val());
+    });
+    
+    storage.child('Image.jpg').getDownloadURL().then(url => {
+        document.getElementById('test').src = url;
     });
 });
