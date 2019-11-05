@@ -53,9 +53,9 @@ function initMap () {  // SessionStorage에서 Login 토큰 있을 때 GoogleMap
         var LoginToken = sessionStorage.getItem('Token');
 
         if(LoginToken == 1) {
-            resolve(response);
-        } else {
             reject()
+        } else {
+            resolve(response);
         }
     })
 
