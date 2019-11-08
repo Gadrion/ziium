@@ -1,44 +1,62 @@
-$(function() {
+kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStorage) {
   var option_list = ["1룸", "1.5룸", "2룸", "3룸", "4룸", "복층", "테라스", "월세", "전세", "구옥"];
-  var files = null;
+
+  $scope.files = null;
+  $scope.option_list = [];
+  $scope.checked_option_list = [];
+  $scope.building_name = "";
+  $scope.memo = "";
+
+  function init() {
+    for(var i=0; i<option_list.length; i++) {
+      var option_element = {};
+      option_element.id = i;
+      option_element.name = option_list[i];
+
+      $scope.option_list.push(option_element);
+    }
+  }
 
   $("#validatedCustomFile").on("change", function(event) {
-    files = document.getElementById("validatedCustomFile").files[0];
-    var reader = new FileReader();
+    $scope.$apply(function() {
+      $scope.files = document.getElementById("validatedCustomFile").files[0];
+      var reader = new FileReader();
 
-    reader.onload = function(event) {
-      var img_element = $("<img class='img' style='width: 50px; height: 50px;'>");
-      $(img_element).attr("src", event.target.result);
-      $("#img_list").append(img_element);
-    }
+      reader.onload = function(event) {
+        var img_element = $("<img class='img' style='width: 50px; height: 50px;'>");
+        $(img_element).attr("src", event.target.result);
+        $("#img_list").append(img_element);
+      }
 
-    reader.readAsDataURL(files);
+      reader.readAsDataURL($scope.files);
+    })
   })
 
-  $("#submit").on("click", function(event) {
+  $scope.toggleCurrency = function(index) {
+    $scope.option_list[index].checked = !$scope.option_list[index].checked;
+  }
+
+  $scope.submit = function () {
     var setData = {};
-    var building_name = $("#building").val();
-    var memo = $("#memo").val();
     var options = [];
 
-    $(".option_class").each(function(index, element) {
-      var checkbox_value = this.checked;
-      if(checkbox_value) {
-        options.push(option_list[index]);
+    for(var i=0; i<$scope.option_list.length; i++) {
+      if(typeof $scope.option_list[i].checked !== 'undefined' && $scope.option_list[i].checked === true) {
+        options.push($scope.option_list[i].name);
       }
-    })
+    }
 
     options = options.join(',');
 
     setData = {
-      title: building_name,
+      title: $scope.building_name,
       status: 'add',
-      memo: memo,
+      memo: $scope.memo,
       option: options,
-      file: files
+      file: $scope.files
     }
+  }
 
-    console.log(setData);
-    files = null;
-  })
+
+  init();
 })

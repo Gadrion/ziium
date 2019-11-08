@@ -15,10 +15,12 @@ kindFramework.controller("MapCtrl", function($scope, $location, $q) {
         marker_content += '<h4>%description%</h4>';
         marker_content += '<p>%address%</p>';
         marker_content += '<div>';
-            marker_content += '<button class="btn btn-secondary" ng-click="go_info()">상세정보 입력</button>';
+            marker_content += '<button class="btn btn-secondary" onclick="go_info()">상세정보 입력</button>';
             marker_content += '<button class="btn btn-secondary" ng-click="remove_marker(this)">삭제</button>';
         marker_content += '</div>';
     marker_content += '</div>';
+
+
     var marker_array = [];
     $scope.object_status = false;
 
@@ -127,7 +129,7 @@ kindFramework.controller("MapCtrl", function($scope, $location, $q) {
         var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" + apiKey;
 
         $.get(url, {}, function(data) {
-            resolve(data);
+            deffered.resolve(data);
         })
 
         return deffered.promise;
