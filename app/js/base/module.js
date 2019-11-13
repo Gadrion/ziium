@@ -1,0 +1,1 @@
+var kindFramework = angular.module('kindFramework', ["ui.router"]);
