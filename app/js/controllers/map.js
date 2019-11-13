@@ -8,14 +8,14 @@
     5. 동시에 구글맵 클릭 시 해당 좌표에 Marker 생성 후 클릭 event 적용 (매물 생성 팝업)
 */
 
-kindFramework.controller("MapCtrl", function($scope, $location, $q) {
+kindFramework.controller("MapCtrl", function($scope, $location, $q, $compile, TempStorage) {
     var map = null;
     var marker_count = 0;
-    var marker_content = '<div class="marker_popup" data-index="%index%">';
+    var marker_content = '<div class="marker_popup">';
         marker_content += '<h4>%description%</h4>';
         marker_content += '<p>%address%</p>';
         marker_content += '<div>';
-            marker_content += '<button class="btn btn-secondary" onclick="go_info()">상세정보 입력</button>';
+            marker_content += '<button class="btn btn-secondary" ng-click="go_info(%index%)">상세정보 입력</button>';
             marker_content += '<button class="btn btn-secondary" ng-click="remove_marker(this)">삭제</button>';
         marker_content += '</div>';
     marker_content += '</div>';
@@ -47,9 +47,11 @@ kindFramework.controller("MapCtrl", function($scope, $location, $q) {
     }
 
     function make_marker (location) {
+        var lat = location.lat();
+        var lng = location.lng();
         if($scope.object_status === false) {
             return false;
-        }
+        }        
 
         getAddressInfo(location).then(function(address) {
             var marker = new google.maps.Marker({
@@ -63,15 +65,29 @@ kindFramework.controller("MapCtrl", function($scope, $location, $q) {
             modify_content = modify_content.replace("%address%", address.results[0].formatted_address);
             modify_content = modify_content.replace("%description%", "상세정보를 입력하세요.");
 
+            var data = {
+                location: {
+                    lat: lat, 
+                    lng: lng
+                },
+                address: address.results[0].formatted_address,
+                description: "이런~"
+            }
+
+            var angular_compile_data = $compile(modify_content)($scope);
+
             marker.addListener('click', function () {
                 var infoWindow = new google.maps.InfoWindow({
-                    content: modify_content
+                    content: angular_compile_data[0]
                 });
 
                 infoWindow.open(map, marker);
             })
 
-            marker_array.push(marker);
+            marker_array.push({
+                marker: marker,
+                data: data
+            });
 
             marker_count++;
         })
@@ -105,16 +121,20 @@ kindFramework.controller("MapCtrl", function($scope, $location, $q) {
             modify_content = modify_content.replace("%address%", value.address);
             modify_content = modify_content.replace("%description%", value.description);
 
+            var angular_compile_data = $compile(modify_content)($scope);
 
             marker.addListener('click', function () {
                 var infoWindow = new google.maps.InfoWindow({
-                    content: modify_content
+                    content: angular_compile_data[0]
                 });
         
                 infoWindow.open(map, marker);
             })
 
-            marker_array.push(marker);
+            marker_array.push({
+                marker: marker,
+                data: value
+            });
             marker_count = index + 1;
 
         })
@@ -138,11 +158,12 @@ kindFramework.controller("MapCtrl", function($scope, $location, $q) {
 
     $scope.remove_marker = function (element) {
         var index = $(element).parent().parent().data('index');
-        marker_array[index].setMap(null);
+        marker_array[index].marker.setMap(null);
     }
 
-    $scope.go_info = function() {
-        $location.path("/views/add_info.html");
+    $scope.go_info = function(index) {
+        TempStorage.setTempStorage(marker_array[index])
+        $location.path("/add_info");
     }
 
     $(function() {

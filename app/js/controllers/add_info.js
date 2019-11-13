@@ -6,8 +6,15 @@ kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStor
   $scope.checked_option_list = [];
   $scope.building_name = "";
   $scope.memo = "";
+  $scope.getMapData = null;
 
   function init() {
+    $scope.getMapData = TempStorage.getTempStorage();
+    // 해당 페이지에서 새로고침 시 map 페이지에서 받아온 데이터가 없어지므로 다시 map 페이지로 이동
+    if(typeof $scope.getMapData.marker === 'undefined') {
+      $location.path('/map');
+    }
+
     for(var i=0; i<option_list.length; i++) {
       var option_element = {};
       option_element.id = i;
@@ -53,10 +60,10 @@ kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStor
       status: 'add',
       memo: $scope.memo,
       option: options,
-      file: $scope.files
+      file: $scope.files,
+      mapData: $scope.getMapData.data
     }
   }
-
 
   init();
 })

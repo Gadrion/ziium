@@ -1,15 +1,15 @@
-kindFramework.service('TempStorage', [], function() {
+kindFramework.factory('TempStorage', function() {
   var setData = {};
 
-  this.setTempStorage = function (data) {
-    setData = data;
-  }
-
-  this.getTempStorage = function () {
-    return setData;
-  }
-
-  this.removeTempStorage = function () {
-    setData = {};
+  return {
+    setTempStorage: function (data) {
+      setData = data;
+    },
+    getTempStorage: function () {
+      return setData;
+    },
+    removeTempStorage: function () {
+      setData = {};
+    }
   }
 })
