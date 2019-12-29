@@ -11,12 +11,18 @@ const writeHouseItem = async (userId, itemInfo) => {
     await storageItemWrite(itemInfo.imageInfo);
 };
 
-
 const dbItemWrite = itemInfo => {
     // db.ref()
-    db.ref('test').set({
+    const addressList = itemInfo.mapData.address.split(' ');
+    let tempObject = '';
+    const addressListLength = addressList.length - 1; // 끝에 숫자로 된 주소를 빼기 위함
+    for(let i = 1; i < addressListLength; i++) {
+        tempObject += `${addressList[i]}/`;
+    }
+    console.log('tempObject', tempObject);
+    db.ref(`map/${tempObject}`).update({
         username: 'test',
-        imageName : 'test/png',
+        // imageName : 'test/png',
         // 넘겨 받는 정보 그대로 넣자.
         ...itemInfo,
       }, error => {

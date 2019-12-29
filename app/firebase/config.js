@@ -50,7 +50,7 @@ firebaseJSFileLoad(() => {
         console.log('data value', data.val());
     });
 
-    fb.database().ref('users').once('value', data => {
+    fb.database().ref('map').once('value', data => {
         console.log('data value', data.val());
     });
 
