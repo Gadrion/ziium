@@ -53,8 +53,8 @@ firebaseJSFileLoad(() => {
     fb.database().ref('users').once('value', data => {
         console.log('data value', data.val());
     });
-    
-    storage.child('Image.jpg').getDownloadURL().then(url => {
-        document.getElementById('test').src = url;
-    });
+
+    // storage.child('Image.jpg').getDownloadURL().then(url => {
+    //     document.getElementById('test').src = url;
+    // });
 });

@@ -63,6 +63,8 @@ kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStor
       file: $scope.files,
       mapData: $scope.getMapData.data
     }
+
+    $location.path('/map');
   }
 
   init();
