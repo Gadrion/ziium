@@ -1,4 +1,7 @@
-kindFramework.controller("LoginCtrl", function($scope, $location) {
+kindFramework.controller("LoginCtrl", function($scope, $location, $timeout, FirebaseService) {
+    // test@gmail.com
+    // 123456
+
     $scope.id_val = "";
     $scope.pw_val = "";
     $scope.login_status = "";
@@ -8,24 +11,28 @@ kindFramework.controller("LoginCtrl", function($scope, $location) {
         password: 1234
     }
 
-    $scope.clickLogin = async function () {
-        const isLogin = await emailLogin($scope.id_val, $scope.pw_val, $location);
-        
-        if (isLogin) {
-            $location.path('/map');
-            console.log('login?', isLogin);
-        }
-        $scope.login_status = "입력정보가 일치하지 않습니다.";
+    $scope.clickLogin = function () {
+        FirebaseService.login($scope.id_val, $scope.pw_val, function(response) {
+            console.log(response);
+            var sessionData = {};
+
+            sessionData.refreshToken = response.user.refreshToken;
+            sessionData.email = response.user.email;
+
+            var SessionToString = JSON.stringify(sessionData);
+            sessionStorage.setItem('Login', SessionToString);
+
+            $location.path('/map')
+        }, function(error) {
+            if(error.code === 'auth/wrong-password') {
+                $scope.login_status = "비밀번호 오류";
+            } else if(error.code === 'auth/wrong-password') {
+                $scope.login_status = "계정 오류";
+            } else if(error.code === 'auth/invalid-email') {
+                $scope.login_status = "이메일 형식이 아닙니다.";
+            } else {
+                $scope.login_status = error.code
+            }
+        });
     }
-
-    // $("#login_status").hide();
-
-    // $("#click_login").on("click", function() {
-    //     if(login_data.id == $scope.id_value && login_data.password == $scope.pw_value) {
-    //         // sessionStorage.setItem("Token", "1");
-    //         $location.path('/map');
-    //     } else {
-    //         $("#login_status").show();
-    //     }
-    // })
 })
