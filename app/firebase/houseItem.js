@@ -39,3 +39,10 @@ const storageItemWrite = imageInfo => {
         console.log('suc');
     });
 }
+
+const getAllHouseItem = () => new Promise(resolve => {
+    db.ref('map').once('value', data => {
+        resolve(data.val());
+        console.log('data value', data.val());
+    });
+});
