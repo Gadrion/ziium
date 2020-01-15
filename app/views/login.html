@@ -16,9 +16,7 @@
             <button type="button" id="click_login" class="btn btn-primary" ng-click="clickLogin()">Login</button>
         </div>
     </div>
-    <div style="text-align: center; color: red" ng-show="login_status">
-        입력정보가 일치하지 않습니다.    
-    </div>
+    <div style="text-align: center; color: red">{{ login_status }}</div>
 </form>
 
 
