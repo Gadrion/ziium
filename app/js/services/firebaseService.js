@@ -16,6 +16,17 @@ kindFramework.factory('FirebaseService', function($q) {
     firebase.auth().signInWithEmailAndPassword(id, password).then(sc, ec);
   }
 
+  FirebaseService.write = function(item) {
+    var addressList = itemInfo.mapData.address.split(' ');
+    var tempObject = '';
+    var addressListLength = addressList.length - 1; // 끝에 숫자로 된 주소를 빼기 위함
+    for(var i = 1; i < addressListLength; i++) {
+        tempObject += `${addressList[i]}/`;
+    }
+
+    console.log(tempObject);
+  }
+
 
   return FirebaseService;
 })
