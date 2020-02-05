@@ -1,4 +1,4 @@
-kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStorage) {
+kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStorage, FirebaseService) {
   var option_list = ["1룸", "1.5룸", "2룸", "3룸", "4룸", "복층", "테라스", "월세", "전세", "구옥"];
 
   $scope.files = null;
@@ -64,10 +64,16 @@ kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStor
       mapData: $scope.getMapData.data
     }
 
-    const result = await dbItemWrite(setData);
-    console.log('result', result);
+    FirebaseService.write(setData).then(function(response) {
+      console.log(response)
+    }, function(error) {
+      console.log(error);
+    })
 
-    $location.path('/map');
+    // const result = await dbItemWrite(setData);
+    // console.log('result', result);
+
+    // $location.path('/map');
   }
 
   init();

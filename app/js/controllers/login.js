@@ -13,7 +13,6 @@ kindFramework.controller("LoginCtrl", function($scope, $location, $timeout, Fire
 
     $scope.clickLogin = function () {
         FirebaseService.login($scope.id_val, $scope.pw_val, function(response) {
-            console.log(response);
             var sessionData = {};
 
             sessionData.refreshToken = response.user.refreshToken;
@@ -22,8 +21,10 @@ kindFramework.controller("LoginCtrl", function($scope, $location, $timeout, Fire
             var SessionToString = JSON.stringify(sessionData);
             sessionStorage.setItem('Login', SessionToString);
 
-            $location.path('/map')
+            $location.path('/map');
+            $scope.$apply();
         }, function(error) {
+            console.log(error);
             if(error.code === 'auth/wrong-password') {
                 $scope.login_status = "비밀번호 오류";
             } else if(error.code === 'auth/wrong-password') {
@@ -33,6 +34,8 @@ kindFramework.controller("LoginCtrl", function($scope, $location, $timeout, Fire
             } else {
                 $scope.login_status = error.code
             }
+
+            $scope.$apply();
         });
     }
 })
