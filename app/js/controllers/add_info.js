@@ -43,7 +43,7 @@ kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStor
     $scope.option_list[index].checked = !$scope.option_list[index].checked;
   }
 
-  $scope.submit = function () {
+  $scope.submit = async function () {
     var setData = {};
     var options = [];
 
@@ -64,7 +64,8 @@ kindFramework.controller("AddInfoCtrl", function($scope, $location, $q, TempStor
       mapData: $scope.getMapData.data
     }
 
-    dbItemWrite(setData);
+    const result = await dbItemWrite(setData);
+    console.log('result', result);
 
     $location.path('/map');
   }

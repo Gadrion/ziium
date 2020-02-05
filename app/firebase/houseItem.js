@@ -20,22 +20,39 @@ const dbItemWrite = itemInfo => {
         tempObject += `${addressList[i]}/`;
     }
     console.log('tempObject', tempObject);
-    db.ref(`map/${tempObject}`).update({
-        username: 'test',
-        // imageName : 'test/png',
-        // 넘겨 받는 정보 그대로 넣자.
-        ...itemInfo,
-      }, error => {
-          if (error) {
-              console.log('wirteHouseItem error', error);
-          } else {
-              console.log('wirteHouseItem success');
-          }
-      });
+    console.log('itemInfo', itemInfo.file);
+    if (itemInfo.file) {
+        storageItemWrite(itemInfo.file);
+    }
+
+    return new Promise((res, rej) => {
+        db.ref(`map/${tempObject}`).update({
+            username: 'test',
+            // imageName : 'test/png',
+            // 넘겨 받는 정보 그대로 넣자.
+            ...itemInfo,
+            }, error => {
+                if (error) {
+                    console.log('wirteHouseItem error', error);
+                    rej(false);
+                } else {
+                    console.log('wirteHouseItem success');
+                    res(true);
+                }
+            }
+        );
+    })
 }
 
 const storageItemWrite = imageInfo => {
     storage.child('test/' + imageInfo.name).put(imageInfo).then(snapshot => {
-        console.log('suc');
+        console.log('suc', snapshot);
     });
 }
+
+const getAllHouseItem = () => new Promise(resolve => {
+    db.ref('map').once('value', data => {
+        resolve(data.val());
+        console.log('data value', data.val());
+    });
+});
